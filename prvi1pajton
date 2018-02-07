@@ -1,0 +1,158 @@
+1zadatak
+
+from math import *
+def udaljenost(L, v = 2):
+    """
+    (list, int) -> (float)
+    Funkcija prima listu naredbi, i normu po kojoj racunamo, te vraca udaljenost od pocetnog polozaja,
+    nakon provodenja naredbi.
+    """
+    x,y = 0.0,0.0
+    for (s,k) in L:
+        if s == 'lijevo':
+            x -= k
+        elif s == 'desno':
+            x += k
+        elif s == 'gore':
+            y += k
+        else :
+            y -= k
+    if v == 1:
+        return abs(x)+abs(y)
+    else:
+        return sqrt(x*x+y*y)
+            
+if __name__ == "__main__":
+    print(udaljenost([ ('gore',5),('dolje',2),('lijevo',3),('desno',2)],1 ))
+    print(udaljenost([ ('gore',7),('lijevo',6),('dolje',4),('desno',2)]))
+
+2zadatak
+
+def promijeni(tekst, n):
+    try :
+        n = int(n)
+        tekst = str(tekst)
+    except: 
+        print('Proslijeđeni argumenti ne odgovaraju.')
+        return
+        
+    ans = ''
+    cnt = 1
+    
+    for s in tekst:
+        if s.lower() in 'aeiou':
+            ans = ans + n*s
+        elif s.lower() in 'qwrtzpšđžćčlkjhgfdsyxcvbnm':
+            if cnt == n:
+                cnt = 1
+            else:
+                cnt += 1
+                ans = ans + s
+        else:
+            ans = ans + s
+    print(ans)
+    
+if __name__ == "__main__":
+    n = input('Unesite broj n: ')
+    tekst = input('Unesite neki tekst: ')
+    promijeni(tekst,n)
+            
+3zadatak
+
+ifile = open('tekst.txt')
+duljine = {}
+for line in ifile:
+    line = line.rstrip()
+    print (line)
+    ll = len(line)
+    if ll in duljine:
+        L = duljine[ll]
+        L.append(line)
+        duljine[ll] = L
+    else :
+        duljine[ll] = [line]
+ifile.close()
+
+rduljine = list(duljine)
+rduljine.sort(reverse = True)
+
+ofile = open('duljine_rijeci.txt','w')
+for d in rduljine:
+    ofile.write('{}: {}\n'.format(d, ' '.join(duljine[d])))
+ofile.close()
+
+4zadatak
+
+from random import *
+M = 0
+L = [351,4865,23,545658,1235,65478,5435,12358]
+
+def sz(b):
+    b = str(b)
+    ans = 0
+    for s in b:
+        ans += int(s)
+    return ans
+
+for b in L :
+    M = max(M, sz(b))
+
+n = randint(1,M)
+
+REZ= [x for x in L if sz(x)>n]
+print(REZ)
+
+5zadatak
+
+global knjige
+knjige = []
+
+class Korisnik:
+    
+    def __init__(self, korisnickoIme, godine):
+        self.korisnickoIme = korisnickoIme
+        self.godine = godine
+        
+    def ispisiPodatke(self):
+        """
+        (self)->()
+        Funkcija ipisuje podatke o korisniku.
+        """
+        print('korisničko ime: {}, godine: {}'.format(self.korisnickoIme, self.godine))
+        
+    def dohvatiPopis(self):
+        """
+        (self) -> ()
+        Funkcija ispisuje listu knjige.
+        """
+        print(knjige)
+
+        
+class Administrator(Korisnik):
+    
+    def dodajKnjigu(self, ime):
+        """
+        (self, ime) -> ()
+        Funkcija dodaje knjigu s imenom ime, u listu knjige.
+        """
+        knjige.append(ime)
+        
+    def brisiKnjigu(self, ime):
+        """
+        (self, ime) -> ()
+        Funkcija briše knjigu s imenom ime iz liste knjige.
+        """
+        knjige.remove(ime)
+
+user = Korisnik('kor1', 20)
+admin = Administrator('adm1', 35)
+admin.dodajKnjigu('HP')
+admin.dodajKnjigu('LOTR')
+admin.dodajKnjigu('Silos')
+user.dohvatiPopis()
+admin.brisiKnjigu('HP')
+admin.dohvatiPopis()
+admin.ispisiPodatke()
+        
+        
+        
